@@ -1,11 +1,15 @@
 # MyEventsApp
 
+Email: team.sar.2021@gmail.com
+Pass: project@21
+
 *04/01/2021*
-1)Authentication: google 
+1)Authentication: google(Redirected to Home Screen) ->Rahul
         verified and anonymous
  
 2)Event formation (Making of event)
 3)Event card(Template for the list View)
+4)Home Screen ->Sahil
 
 Database-Formation-Done-Card-ListView-MainActivity
 Field : Title/Sub-title
