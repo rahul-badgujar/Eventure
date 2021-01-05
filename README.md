@@ -26,4 +26,4 @@ Field : Title/Sub-title
           Limit od students
           offline/online/both
           location
-          tags/keywords***for searching
+          tags/keywords->for searching
