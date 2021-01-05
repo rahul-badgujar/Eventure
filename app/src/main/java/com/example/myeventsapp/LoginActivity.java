@@ -4,9 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -18,7 +17,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     // Log tag for Logging
     static final String LOG_TAG = "context(MainActivity)";
@@ -30,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     // UI Elements
     SignInButton googleSignInBtn;
-    Button signOutBtn;
-    TextView userEmailTv;
 
     // Google Sign in Auth Objects
     private GoogleSignInClient mGoogleSignInClient;
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         /* SET UP UI ELEMENTS */
         // configure signInWithGoogle Button
@@ -52,17 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
-        // configure signOut Button
-        signOutBtn = findViewById(R.id.sign_out_btn);
-        signOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
-        // configure userEmail Textview
-        userEmailTv = findViewById(R.id.user_email_tv);
-
 
         /* CONFIGURE FIREBASE AUTH */
         // Initialize Firebase Auth
@@ -90,11 +76,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);   // launch the intent
     }
 
-    // to sign out user
-    private void signOut() {
-        mAuth.signOut();    // sign out the user
-        updateUserEmailTv(null);    // set the userEmail Textview to have default message
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,14 +86,19 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);   // get the Task for GoogleSignIn Account from intent data
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Toast.makeText(this, account.getEmail().toString(), Toast.LENGTH_SHORT).show();
-                updateUserEmailTv(account); // update userEmailTextview to contain user email
+                GoogleSignInAccount currentGoogleAccount = task.getResult(ApiException.class);
+                Toast.makeText(this, currentGoogleAccount.getEmail().toString(), Toast.LENGTH_SHORT).show();
+                // if currentGoogleAccount is null, it means their is no used logged in currently
+                if(currentGoogleAccount!=null) {
+                    // start Home Activity
+                    Intent intentToHome=new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intentToHome);
+                }
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Toast.makeText(this, "Google sign in Failed: " + e.toString(), Toast.LENGTH_SHORT).show();
-                updateUserEmailTv(null);// update userEmailTextview to show default text
+
             }
         }
     }
@@ -122,17 +108,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is already signed in and update UI accordingly.
         GoogleSignInAccount currentGoogleAccount = GoogleSignIn.getLastSignedInAccount(this);   // get the google account
-        updateUserEmailTv(currentGoogleAccount);    // update the userEmail Textview depending on user
-
-    }
-
-    // this method updates the userEmailTextview for current logged in Google Account
-    private void updateUserEmailTv(GoogleSignInAccount currentGoogleAccount) {
-        if (currentGoogleAccount == null) { // currentGoogleAccount is null if their is no user signed in
-            userEmailTv.setText("Please login");
-        } else {    // otherwise we have user signed in already into app
-            String userEmail = currentGoogleAccount.getEmail(); // get the email from google account
-            userEmailTv.setText("Logged in as: " + userEmail);  // set userEmail in userEmail Textview
+        // if currentGoogleAccount is null, it means their is no used logged in currently
+        if(currentGoogleAccount!=null) {
+            // start Home Activity
+            Log.i(LOG_TAG, "User already logged in: "+currentGoogleAccount.getEmail());
+            Intent intentToHome=new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(intentToHome);
         }
     }
 
