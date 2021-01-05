@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "828923491216",
-    "project_id": "myeventsapp-f37ad",
-    "storage_bucket": "myeventsapp-f37ad.appspot.com"
+    "project_number": "1011451631781",
+    "project_id": "myeventsapp-a2730",
+    "storage_bucket": "myeventsapp-a2730.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:828923491216:android:d160d289b268f328a93915",
+        "mobilesdk_app_id": "1:1011451631781:android:cfdbfcd2a85fbbc5d2954c",
         "android_client_info": {
           "package_name": "com.example.myeventsapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "828923491216-bm0ko6t70rrftab36fecl92d7ikisc05.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.myeventsapp",
-            "certificate_hash": "7097b864bac9881db8da7ffea796cc96b2de9a52"
-          }
-        },
-        {
-          "client_id": "828923491216-hs1322qsjk8rp98t9ri54jdpu661ankk.apps.googleusercontent.com",
+          "client_id": "1011451631781-n3aan5ltmu35rmftnkv1c905s6paj0ao.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC7JTESHXrymIlErOFVUyCczlDWT_aikA0"
+          "current_key": "AIzaSyB_kjgqid_Lpfh7jJWEFwBGI8MCTuBVphs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "828923491216-hs1322qsjk8rp98t9ri54jdpu661ankk.apps.googleusercontent.com",
+              "client_id": "1011451631781-n3aan5ltmu35rmftnkv1c905s6paj0ao.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
