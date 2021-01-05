@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -110,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         // if currentGoogleAccount is null, it means their is no used logged in currently
         if(currentGoogleAccount!=null) {
             // start Home Activity
+            Log.i(LOG_TAG, "User already logged in: "+currentGoogleAccount.getEmail());
             Intent intentToHome=new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intentToHome);
         }
