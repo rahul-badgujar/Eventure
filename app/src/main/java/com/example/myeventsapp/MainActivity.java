@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 signOut();
             }
         });
-        // configure userEmailTextview
+        // configure userEmail Textview
         userEmailTv = findViewById(R.id.user_email_tv);
 
 
