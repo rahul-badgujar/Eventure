@@ -20,12 +20,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Log tag
+    // Log tag for Logging
     static final String LOG_TAG = "context(MainActivity)";
 
     // constants
 
-    // Request Codes
+    // Request Codes for Intent Results
     static final int RC_SIGN_IN = 100;
 
     // UI Elements
@@ -66,41 +66,43 @@ public class MainActivity extends AppCompatActivity {
 
         /* CONFIGURE FIREBASE AUTH */
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); // get the instance of Firebase Auth
         // Configure Google Sign In
-        createRequest();
+        createRequest();    // create Google Sign In request
     }
 
-    // to sign out user
-    private void signOut() {
-        mAuth.signOut();
-        updateUserEmailTv(null);
-    }
 
     // to create Sign in request
     private void createRequest() {
         // build Default GoogleSignInOption
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.oAuth_client_id))    // providing oAuth Client ID
-                .requestEmail()
+                .requestEmail() // requesting Email to be selected
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);    // Creating googleSignInClient from options specified in gso
     }
 
     // to sign in user
     private void signIn() {
+        // this will show up a popup to user with email id to be selected to login
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();    // intent to select google account
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_SIGN_IN);   // launch the intent
+    }
+
+    // to sign out user
+    private void signOut() {
+        mAuth.signOut();    // sign out the user
+        updateUserEmailTv(null);    // set the userEmail Textview to have default message
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        // check the request code
+        if (requestCode == RC_SIGN_IN) {    // if AccountSelectionIntent has send result
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);   // get the Task for GoogleSignIn Account from intent data
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
@@ -118,18 +120,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        GoogleSignInAccount currentGoogleAccount = GoogleSignIn.getLastSignedInAccount(this);
-        updateUserEmailTv(currentGoogleAccount);
+        // Check if user is already signed in and update UI accordingly.
+        GoogleSignInAccount currentGoogleAccount = GoogleSignIn.getLastSignedInAccount(this);   // get the google account
+        updateUserEmailTv(currentGoogleAccount);    // update the userEmail Textview depending on user
+
     }
 
     // this method updates the userEmailTextview for current logged in Google Account
     private void updateUserEmailTv(GoogleSignInAccount currentGoogleAccount) {
-        if (currentGoogleAccount == null) {
+        if (currentGoogleAccount == null) { // currentGoogleAccount is null if their is no user signed in
             userEmailTv.setText("Please login");
-        } else {
-            String userEmail = currentGoogleAccount.getEmail();
-            userEmailTv.setText("Logged in as: " + userEmail);
+        } else {    // otherwise we have user signed in already into app
+            String userEmail = currentGoogleAccount.getEmail(); // get the email from google account
+            userEmailTv.setText("Logged in as: " + userEmail);  // set userEmail in userEmail Textview
         }
     }
 
