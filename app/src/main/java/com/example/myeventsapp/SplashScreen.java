@@ -11,14 +11,10 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashScreen.this, LoginActivity.class));
-                finish();
-            }
-        },4000);
+        // NOTE: we are not setting any content view for SplashScreenActivity
+        // goto Login Activity after cold boot
+        Intent intentToLoginScreen=new Intent(SplashScreen.this, LoginActivity.class);
+        startActivity(intentToLoginScreen);
+        finish();
     }
 }

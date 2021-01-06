@@ -14,7 +14,7 @@
         </activity>
         <activity
             android:name=".SplashScreen"
-            android:theme="@style/Theme.MyEventsApp.NoActionBar">
+            android:theme="@style/Theme.MyEventsApp.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
