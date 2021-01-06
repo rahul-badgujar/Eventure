@@ -32,8 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     static final int RC_SIGN_IN = 100;
 
     // UI Elements
-    SignInButton googleSignInBtn;
-    TextView skipTv;
+    private SignInButton googleSignInBtn;
+    private TextView skipTv;
 
     // Google Sign in Auth Objects
     private GoogleSignInClient mGoogleSignInClient;

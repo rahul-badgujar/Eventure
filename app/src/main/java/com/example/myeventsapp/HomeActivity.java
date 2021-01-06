@@ -23,24 +23,23 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomeActivity extends AppCompatActivity {
 
     // Log Tag
-    public final String LOG_TAG="context(LoginActivity)";
+    public final String LOG_TAG="context(HomeActivity)";
 
     // Firebase Auth Objects
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    //Declaring a BottomNavigationView Object
-    BottomNavigationView bottomNavigationView;
+    // UI elements
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //Casting the bottomNavigationView Object with R.id.bottomNavigationBar
+        /* SET UP UI ELEMENTS */
+        // configure BNB
         bottomNavigationView = findViewById(R.id.bottomNavigationBar);
-
-        //Setting up the setOnNavigationItemSelectedListener for the bottom navigation bar
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -66,7 +65,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        /* Configure Firebase Auth */
+        /* CONFIGURE FIREBASE AUTH */
+        // instantiate firebase auth instance
         mAuth=FirebaseAuth.getInstance();
         // configure request for Google Sign In
         createRequest();
@@ -95,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // s
         switch (item.getItemId()) {
             case R.id.logout_menu_item: // if logout button is pressed
                 signOut();  // sign out
