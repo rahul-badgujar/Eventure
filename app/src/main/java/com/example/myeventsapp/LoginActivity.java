@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -16,15 +17,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-    //adding Guest login button
-    Button guestLoginButton;
 
     // Log tag for Logging
     static final String LOG_TAG = "context(MainActivity)";
@@ -36,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // UI Elements
     SignInButton googleSignInBtn;
+    TextView skipTv;
 
     // Google Sign in Auth Objects
     private GoogleSignInClient mGoogleSignInClient;
@@ -47,18 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //setup of buttons
-        guestLoginButton= findViewById( R.id.guestSignIn);
-
-        //setting up the functionality of the button to directly go to the HomeActivity
-        guestLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "You've entered as Guest and it is only for testing purpose", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
-            }
-        });
-
         /* SET UP UI ELEMENTS */
         // configure signInWithGoogle Button
         googleSignInBtn = findViewById(R.id.google_sign_in_btn);
@@ -68,6 +54,16 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+        // configure skip Textview
+        skipTv= findViewById(R.id.skipTv);
+        skipTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this, "Logged in as guest", Toast.LENGTH_SHORT).show();
+                launchHomeActivity();
+            }
+        });
+
 
         /* CONFIGURE FIREBASE AUTH */
         // Initialize Firebase Auth
@@ -110,8 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                 // if currentGoogleAccount is null, it means their is no used logged in currently
                 if (currentGoogleAccount != null) {
                     // start Home Activity
-                    Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(intentToHome);
+                    launchHomeActivity();
                 }
 
             } catch (ApiException e) {
@@ -158,9 +153,13 @@ public class LoginActivity extends AppCompatActivity {
         if (currentGoogleAccount != null) {
             // start Home Activity
             Log.i(LOG_TAG, "User already logged in: " + currentGoogleAccount.getEmail());
-            Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intentToHome);
+            launchHomeActivity();
         }
+    }
+
+    private void launchHomeActivity() {
+        Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(intentToHome);
     }
 
 
