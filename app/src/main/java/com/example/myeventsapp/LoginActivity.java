@@ -12,8 +12,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -89,15 +91,42 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount currentGoogleAccount = task.getResult(ApiException.class);
                 Toast.makeText(this, currentGoogleAccount.getEmail().toString(), Toast.LENGTH_SHORT).show();
                 // if currentGoogleAccount is null, it means their is no used logged in currently
-                if(currentGoogleAccount!=null) {
+                if (currentGoogleAccount != null) {
                     // start Home Activity
-                    Intent intentToHome=new Intent(getApplicationContext(), HomeActivity.class);
+                    Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intentToHome);
                 }
 
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Toast.makeText(this, "Google sign in Failed: " + e.toString(), Toast.LENGTH_SHORT).show();
+                String message; // error message to be shown to user
+                switch (e.getStatusCode()) {    // assign error message depending on Error Code
+                    case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        message = "Sign in cancelled by user";
+                        break;
+                    case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                        message="Sign in failed, please retry";
+                        break;
+                    case GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS:
+                        message="Sign in currently in progress, please wait";
+                        break;
+                    case GoogleSignInStatusCodes.INVALID_ACCOUNT:
+                        message = "Invalid account selected";
+                        break;
+                    case  GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
+                        message="Sign in required for this account";
+                        break;
+                    case GoogleSignInStatusCodes.NETWORK_ERROR:
+                        message="Network error occured, please retry";
+                        break;
+                    case GoogleSignInStatusCodes.INTERNAL_ERROR:
+                        message="Internal error occured, please retry";
+                        break;
+                    default:
+                        message="Unknown error occured with ERROR CODE "+Integer.toString(e.getStatusCode());
+
+                }
+                // Google Sign In failed, show error to user using toast
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -109,10 +138,10 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is already signed in and update UI accordingly.
         GoogleSignInAccount currentGoogleAccount = GoogleSignIn.getLastSignedInAccount(this);   // get the google account
         // if currentGoogleAccount is null, it means their is no used logged in currently
-        if(currentGoogleAccount!=null) {
+        if (currentGoogleAccount != null) {
             // start Home Activity
-            Log.i(LOG_TAG, "User already logged in: "+currentGoogleAccount.getEmail());
-            Intent intentToHome=new Intent(getApplicationContext(), HomeActivity.class);
+            Log.i(LOG_TAG, "User already logged in: " + currentGoogleAccount.getEmail());
+            Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intentToHome);
         }
     }
