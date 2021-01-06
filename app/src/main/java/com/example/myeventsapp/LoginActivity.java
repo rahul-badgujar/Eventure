@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -20,6 +21,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
+
+
+    //adding Guest login button
+    Button guestLoginButton;
 
     // Log tag for Logging
     static final String LOG_TAG = "context(MainActivity)";
@@ -41,6 +46,18 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //setup of buttons
+        guestLoginButton= findViewById( R.id.guestSignIn);
+
+        //setting up the functionality of the button to directly go to the HomeActivity
+        guestLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this, "You've entered as Guest and it is only for testing purpose", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+            }
+        });
 
         /* SET UP UI ELEMENTS */
         // configure signInWithGoogle Button

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,10 +29,42 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    //Declaring a BottomNavigationView Object
+    BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //Casting the bottomNavigationView Object with R.id.bottomNavigationBar
+        bottomNavigationView = findViewById(R.id.bottomNavigationBar);
+
+        //Setting up the setOnNavigationItemSelectedListener for the bottom navigation bar
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                //Applying switch case for the navigation bar objects to be selected
+                switch (item.getItemId()){
+                    case R.id.home:
+                        Toast.makeText(HomeActivity.this, "Home Screen", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.timeline:
+                        Toast.makeText(HomeActivity.this, "Timeline Screen", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.add:
+                        Toast.makeText(HomeActivity.this, "Add Screen", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.notifications:
+                        Toast.makeText(HomeActivity.this, "Notifications Screen", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.profile:
+                        Toast.makeText(HomeActivity.this, "Profile Screen", Toast.LENGTH_LONG).show();
+                        break;
+                }
+                return true;
+            }
+        });
 
         /* Configure Firebase Auth */
         mAuth=FirebaseAuth.getInstance();
