@@ -1,5 +1,6 @@
 package com.example.myeventsapp.activity_login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,14 +20,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     // Log tag for Logging
-    static final String LOG_TAG = "context(MainActivity)";
+    static final String LOG_TAG = "context(LoginActivity)";
 
     // constants
 
@@ -108,7 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                 // if currentGoogleAccount is null, it means their is no used logged in currently
                 if (currentGoogleAccount != null) {
                     // start Home Activity
-                    launchHomeActivity();
+                    Log.i(LOG_TAG, "Google account selected: "+currentGoogleAccount.getEmail());
+                    firebaseSignInUsingGoogleAccount(currentGoogleAccount);
                 }
 
             } catch (ApiException e) {
@@ -146,15 +153,35 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void firebaseSignInUsingGoogleAccount(GoogleSignInAccount currentGoogleAccount) {
+        AuthCredential credential= GoogleAuthProvider.getCredential(currentGoogleAccount.getIdToken(), null);
+        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Log.i(LOG_TAG, "Auth successfull");
+                    if(mAuth.getCurrentUser()!=null) {
+                        Toast.makeText(getApplicationContext(), mAuth.getCurrentUser().getEmail().toString(), Toast.LENGTH_SHORT).show();
+                        launchHomeActivity();
+                    }
+                } else {
+                    Log.i(LOG_TAG, "Sign in failed");
+                    Toast.makeText(getApplicationContext(), "Auth failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         // Check if user is already signed in and update UI accordingly.
-        GoogleSignInAccount currentGoogleAccount = GoogleSignIn.getLastSignedInAccount(this);   // get the google account
+        FirebaseUser user=mAuth.getCurrentUser();  // get the google account
         // if currentGoogleAccount is null, it means their is no used logged in currently
-        if (currentGoogleAccount != null) {
+        if (user != null) {
             // start Home Activity
-            Log.i(LOG_TAG, "User already logged in: " + currentGoogleAccount.getEmail());
+            Log.i(LOG_TAG, "User already logged in: " + user.getEmail());
             launchHomeActivity();
         }
     }
