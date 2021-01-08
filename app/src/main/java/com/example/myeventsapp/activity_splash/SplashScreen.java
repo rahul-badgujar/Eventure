@@ -1,10 +1,11 @@
-package com.example.myeventsapp;
+package com.example.myeventsapp.activity_splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+
+import com.example.myeventsapp.activity_login.LoginActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
