@@ -20,4 +20,5 @@
     <string name="notifications">Notifications</string>
     <string name="profile">Profile</string>
     <string name="app_logo_with_description">app logo with description</string>
+    <string name="profile_image_here">profile image here</string>
 </resources>

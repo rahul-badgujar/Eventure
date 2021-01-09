@@ -59,4 +59,7 @@ dependencies {
 
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // picasso library for network images loading caching
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

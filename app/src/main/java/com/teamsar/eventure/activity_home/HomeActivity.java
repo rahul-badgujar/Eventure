@@ -127,9 +127,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.notifications:
                 return switchToFragment(new NotificationFragment());
             case R.id.profile:
+                // if user is logged in, show him profile
                 if(mAuth.getCurrentUser()!=null) {
                     return switchToFragment(new ProfileFragment());
-                }
+                }   // otherwise launch login activity
                 else {
                     launchLoginActivity();
                     return true;
@@ -139,7 +140,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void launchLoginActivity() {
-        Intent intentToLoginActivity=new Intent(HomeActivity.this, LoginActivity.class);
-        startActivity(intentToLoginActivity);
+        // as this home activity is called on top of LoginActivity, so finishing the activity will launch login screen
+        finish();
+        /*Intent intentToLoginActivity=new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intentToLoginActivity);*/
     }
 }
