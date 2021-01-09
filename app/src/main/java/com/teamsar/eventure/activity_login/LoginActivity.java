@@ -1,5 +1,6 @@
 package com.teamsar.eventure.activity_login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,8 +17,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.teamsar.eventure.R;
 import com.teamsar.eventure.activity_home.HomeActivity;
 
@@ -25,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // Log tag for Logging
-    static final String LOG_TAG = "context(MainActivity)";
+    static final String LOG_TAG = "context(LoginActivity)";
 
     // constants
 
@@ -56,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         // configure skip Textview
-        skipTv= findViewById(R.id.skipTv);
+        skipTv = findViewById(R.id.skipTv);
         skipTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     private void createRequest() {
         // build Default GoogleSignInOption
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(getString(R.string.oAuth_client_id))    // providing oAuth Client ID
+                .requestIdToken(getString(R.string.oAuth_client_id))    // providing oAuth Client ID
                 .requestEmail() // requesting Email to be selected
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
@@ -103,11 +109,13 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount currentGoogleAccount = task.getResult(ApiException.class);
-                Toast.makeText(this, currentGoogleAccount.getEmail().toString(), Toast.LENGTH_SHORT).show();
                 // if currentGoogleAccount is null, it means their is no used logged in currently
                 if (currentGoogleAccount != null) {
-                    // start Home Activity
-                    launchHomeActivity();
+                    Log.i(LOG_TAG, "Google Account selected: " + currentGoogleAccount.getEmail());
+                    // google account is selected successfully, now we sign in using firebase
+                    firebaseSignInUsingGoogleAccount(currentGoogleAccount);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Couldn't select Google Account", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (ApiException e) {
@@ -117,48 +125,70 @@ public class LoginActivity extends AppCompatActivity {
                         message = "Sign in cancelled by user";
                         break;
                     case GoogleSignInStatusCodes.SIGN_IN_FAILED:
-                        message="Sign in failed, please retry";
+                        message = "Sign in failed, please retry";
                         break;
                     case GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS:
-                        message="Sign in currently in progress, please wait";
+                        message = "Sign in currently in progress, please wait";
                         break;
                     case GoogleSignInStatusCodes.INVALID_ACCOUNT:
                         message = "Invalid account selected";
                         break;
-                    case  GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
-                        message="Sign in required for this account";
+                    case GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
+                        message = "Sign in required for this account";
                         break;
                     case GoogleSignInStatusCodes.NETWORK_ERROR:
-                        message="Network error occured, please retry";
+                        message = "Network error occurred, please retry";
                         break;
                     case GoogleSignInStatusCodes.INTERNAL_ERROR:
-                        message="Internal error occured, please retry";
+                        message = "Internal error occurred, please retry";
                         break;
                     default:
-                        message="Unknown error occured with ERROR CODE "+Integer.toString(e.getStatusCode());
+                        message = "Unknown error occurred with ERROR CODE " + e.getStatusCode();
 
                 }
                 // Google Sign In failed, show error to user using toast
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
             }
         }
+    }
+
+    private void firebaseSignInUsingGoogleAccount(GoogleSignInAccount currentGoogleAccount) {
+        // get credentials for firebase login using google account selected
+        AuthCredential credential = GoogleAuthProvider.getCredential(currentGoogleAccount.getIdToken(), null);
+        // sign in with firebase using credentials
+        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.i(LOG_TAG, "Firebase sign in successful: " + currentGoogleAccount.getEmail());
+                    Toast.makeText(getApplicationContext(), mAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                    // launch home activity
+                    launchHomeActivity();
+                } else {
+                    Log.i(LOG_TAG, "Firebase sign in failed ");
+                    Toast.makeText(getApplicationContext(), "Sign in failed, retry", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         // Check if user is already signed in and update UI accordingly.
-        GoogleSignInAccount currentGoogleAccount = GoogleSignIn.getLastSignedInAccount(this);   // get the google account
-        // if currentGoogleAccount is null, it means their is no used logged in currently
-        if (currentGoogleAccount != null) {
+        FirebaseUser currentUser = mAuth.getCurrentUser(); // get the current user account
+        // if currentUser is null, it means their is no used logged in currently
+        if (currentUser != null) {
+            Toast.makeText(getApplicationContext(), currentUser.getEmail(), Toast.LENGTH_SHORT).show();
             // start Home Activity
-            Log.i(LOG_TAG, "User already logged in: " + currentGoogleAccount.getEmail());
+            Log.i(LOG_TAG, "User already logged in: " + currentUser.getEmail());
             launchHomeActivity();
         }
     }
 
     private void launchHomeActivity() {
+        // launch home activity
         Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intentToHome);
     }
