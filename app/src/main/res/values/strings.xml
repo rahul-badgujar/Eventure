@@ -19,4 +19,5 @@
     <string name="new_event">New Event</string>
     <string name="notifications">Notifications</string>
     <string name="profile">Profile</string>
+    <string name="app_logo_with_description">app logo with description</string>
 </resources>

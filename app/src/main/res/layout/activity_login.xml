@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".activity_login.LoginActivity">
 
+    <ImageView
+        android:id="@+id/app_logo_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_logo_with_description"
+        android:foregroundGravity="center_vertical|center_horizontal"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@+id/google_sign_in_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/launcher_icon_with_description" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_in_btn"
         android:layout_width="match_parent"
@@ -13,7 +26,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginBottom="32dp"
         app:buttonSize="wide"
-        app:layout_constraintBottom_toTopOf="@+id/skipTv"
+        app:layout_constraintBottom_toTopOf="@+id/skip_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent">
@@ -21,7 +34,7 @@
     </com.google.android.gms.common.SignInButton>
 
     <TextView
-        android:id="@+id/skipTv"
+        android:id="@+id/skip_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"

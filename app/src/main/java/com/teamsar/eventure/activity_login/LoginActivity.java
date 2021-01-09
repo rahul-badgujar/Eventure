@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         // configure skip Textview
-        skipTv = findViewById(R.id.skipTv);
+        skipTv = findViewById(R.id.skip_tv);
         skipTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
