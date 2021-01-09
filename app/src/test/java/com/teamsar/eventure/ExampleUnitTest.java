@@ -1,4 +1,4 @@
-package com.example.myeventsapp;
+package com.teamsar.eventure;
 
 import org.junit.Test;
 
