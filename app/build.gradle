@@ -4,6 +4,16 @@ plugins {
 }
 
 android {
+
+    signingConfigs {
+        debug {
+            storeFile file(DEBUG_STORE_FILE)
+            storePassword DEBUG_STORE_PASSWORD
+            keyAlias DEBUG_KEY_ALIAS
+            keyPassword DEBGU_KEY_PASSWORD
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
