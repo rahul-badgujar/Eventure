@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "887686437041",
+    "project_id": "eventure-7ea94",
+    "storage_bucket": "eventure-7ea94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887686437041:android:c7143f77be3b9f81b16a90",
+        "android_client_info": {
+          "package_name": "com.teamsar.eventure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSggwldVea1iLlM9YRWtJ6hf_Q0SBsw5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
