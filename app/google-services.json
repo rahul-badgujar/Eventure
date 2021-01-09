@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "887686437041-hg81145qrh2stn3iao2j9rnobu4v6f94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamsar.eventure",
+            "certificate_hash": "4660f02584ca8b6d2bf29a14d993f6ecaabdf21b"
+          }
+        },
+        {
           "client_id": "887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com",
           "client_type": 3
         }
