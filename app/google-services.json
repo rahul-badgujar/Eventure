@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "1011451631781",
-    "project_id": "myeventsapp-a2730",
-    "storage_bucket": "myeventsapp-a2730.appspot.com"
+    "project_number": "887686437041",
+    "project_id": "eventure-7ea94",
+    "storage_bucket": "eventure-7ea94.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1011451631781:android:cfdbfcd2a85fbbc5d2954c",
+        "mobilesdk_app_id": "1:887686437041:android:c7143f77be3b9f81b16a90",
         "android_client_info": {
-          "package_name": "com.example.myeventsapp"
+          "package_name": "com.teamsar.eventure"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1011451631781-n3aan5ltmu35rmftnkv1c905s6paj0ao.apps.googleusercontent.com",
+          "client_id": "887686437041-hg81145qrh2stn3iao2j9rnobu4v6f94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamsar.eventure",
+            "certificate_hash": "4660f02584ca8b6d2bf29a14d993f6ecaabdf21b"
+          }
+        },
+        {
+          "client_id": "887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB_kjgqid_Lpfh7jJWEFwBGI8MCTuBVphs"
+          "current_key": "AIzaSyDSggwldVea1iLlM9YRWtJ6hf_Q0SBsw5Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1011451631781-n3aan5ltmu35rmftnkv1c905s6paj0ao.apps.googleusercontent.com",
+              "client_id": "887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
