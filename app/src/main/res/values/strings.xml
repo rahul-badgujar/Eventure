@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Events App</string>
+    <string name="app_name">Eventure</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="log_out">Log out</string>
     <string name="title_activity_home">Home</string>
