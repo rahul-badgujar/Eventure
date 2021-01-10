@@ -69,5 +69,6 @@ dependencies {
     implementation "com.hendraanggrian.appcompat:socialview:0.2"
     //Added the image cropper api from https://github.com/ArthurHub/Android-Image-Cropper
     //to crop the images.
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
 }
