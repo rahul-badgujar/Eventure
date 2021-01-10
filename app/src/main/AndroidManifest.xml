@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventure">
-        <activity android:name=".activity_home.HomeActivity" android:theme="@style/Theme.Eventure">
+        <activity android:name=".activity_addnewevent.AddNewEvent"></activity>
+        <activity
+            android:name=".activity_home.HomeActivity"
+            android:theme="@style/Theme.Eventure">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,10 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity_login.LoginActivity" android:theme="@style/Theme.Eventure.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".activity_login.LoginActivity"
+            android:theme="@style/Theme.Eventure.NoActionBar"></activity>
     </application>
-
 
 </manifest>
