@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         // firstly load HomeFragment as default opened fragment for BNB
-        switchToFragment(new HomeFragment());
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         /* CONFIGURE FIREBASE AUTH */
         // instantiate firebase auth instance
@@ -158,10 +158,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 // check if user signed in or not
                 if(mAuth.getCurrentUser()==null) {  // user not signed in
                     // go back to home fragment
-                    switchToFragment(new HomeFragment());
+                    bottomNavigationView.setSelectedItemId(R.id.home);
                 } else {
                     // show the profile fragment
-                    switchToFragment(new ProfileFragment());
+                    bottomNavigationView.setSelectedItemId(R.id.profile);
                 }
                 break;
         }
