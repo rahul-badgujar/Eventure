@@ -62,4 +62,5 @@ dependencies {
 
     // picasso library for network images loading caching
     implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
