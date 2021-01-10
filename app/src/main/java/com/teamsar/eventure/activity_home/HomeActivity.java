@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.teamsar.eventure.activity_home.fragments_bnb.NewEventFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.NotificationFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
+import com.teamsar.eventure.activity_login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -81,20 +83,21 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logout_menu_item: // if logout button is pressed
+            case R.id.signout_menu_item: // if logout button is pressed
                 signOut();  // sign out
             default: return super.onOptionsItemSelected(item);
         }
     }
 
-    private void signOut() {
+    public void signOut() {
         mAuth.signOut();    // signout the user from FirebaseAuth
         // but signing out from FirebaseAuth is not enough for Google Sign in
         // we also need to signout the user using Google Sign in Client
         mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                finish();   // close this activity once user signout, this will take to calling activity i.e., LoginActivity
+                // switch to home fragment once sign out
+                switchToFragment(new HomeFragment());
             }
         });
 
@@ -115,25 +118,31 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // switch to fragment depending on BNB item selected
-        Fragment fragmentToLoad=null;
         switch (item.getItemId()){
             case R.id.home:
-                fragmentToLoad=new HomeFragment();
-                break;
+                return switchToFragment(new HomeFragment());
             case R.id.timeline:
-                fragmentToLoad=new TimelineFragment();
-                break;
+                return switchToFragment(new TimelineFragment());
             case R.id.add:
-                fragmentToLoad=new NewEventFragment();
-                break;
+                return switchToFragment(new NewEventFragment());
             case R.id.notifications:
-                fragmentToLoad=new NotificationFragment();
-                break;
+                return switchToFragment(new NotificationFragment());
             case R.id.profile:
-                fragmentToLoad=new ProfileFragment();
-                break;
+                // if user is logged in, show him profile
+                if(mAuth.getCurrentUser()!=null) {
+                    return switchToFragment(new ProfileFragment());
+                }   // otherwise launch login activity
+                else {
+                    launchLoginActivity();
+                    return true;
+                }
         }
-        // load the fragment on screen
-        return switchToFragment(fragmentToLoad);
+        return false;
+    }
+
+    private void launchLoginActivity() {
+        // launch LoginActivity using intent
+        Intent intentToLoginActivity=new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intentToLoginActivity);
     }
 }

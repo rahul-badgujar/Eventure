@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventure">
-        <activity android:name=".activity_home.HomeActivity">
+        <activity android:name=".activity_home.HomeActivity" android:theme="@style/Theme.Eventure">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity_splash.SplashScreen"
@@ -22,11 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity_login.LoginActivity" android:theme="@style/Theme.Eventure.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
     </application>
 
