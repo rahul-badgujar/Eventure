@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.teamsar.eventure.activity_home.fragments_bnb.NewEventFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.NotificationFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
+import com.teamsar.eventure.activity_login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -94,7 +96,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                finish();   // close this activity once user signout, this will take to calling activity i.e., LoginActivity
+                // switch to home fragment once sign out
+                switchToFragment(new HomeFragment());
             }
         });
 
@@ -138,9 +141,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void launchLoginActivity() {
-        // as this home activity is called on top of LoginActivity, so finishing the activity will launch login screen
-        finish();
-        /*Intent intentToLoginActivity=new Intent(HomeActivity.this, LoginActivity.class);
-        startActivity(intentToLoginActivity);*/
+        // launch LoginActivity using intent
+        Intent intentToLoginActivity=new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intentToLoginActivity);
     }
 }

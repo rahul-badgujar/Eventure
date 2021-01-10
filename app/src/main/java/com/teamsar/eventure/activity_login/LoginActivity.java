@@ -188,9 +188,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
-        // launch home activity
-        Intent intentToHome = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(intentToHome);
+        // this activity will be launched by HomeActivity
+        // so finish will get HomeActivity on top
+        finish();
     }
 
 
