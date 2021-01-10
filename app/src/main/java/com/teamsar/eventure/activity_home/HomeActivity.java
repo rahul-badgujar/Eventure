@@ -17,8 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.teamsar.eventure.activity_addnewevent.AddNewEvent;
 import com.teamsar.eventure.activity_home.fragments_bnb.HomeFragment;
-import com.teamsar.eventure.activity_home.fragments_bnb.NewEventFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.NotificationFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
@@ -73,9 +73,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     // this method inflates activity menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // get menu inflator for activity
+        // get menu inflater for activity
         MenuInflater menuInflater=getMenuInflater();
-        // infate the home_activity_menu in the menu provider
+        // inflate the home_activity_menu in the menu provider
         menuInflater.inflate(R.menu.home_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -124,7 +124,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.timeline:
                 return switchToFragment(new TimelineFragment());
             case R.id.add:
-                return switchToFragment(new NewEventFragment());
+                //return switchToFragment(new NewEventFragment());
+                startActivity(new Intent(HomeActivity.this, AddNewEvent.class));
+                return true;
             case R.id.notifications:
                 return switchToFragment(new NotificationFragment());
             case R.id.profile:
