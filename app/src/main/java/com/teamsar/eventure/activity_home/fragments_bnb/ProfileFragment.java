@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.teamsar.eventure.R;
+import com.teamsar.eventure.activity_home.HomeActivity;
 
 
 public class ProfileFragment extends Fragment {
@@ -24,6 +26,7 @@ public class ProfileFragment extends Fragment {
     private ShapeableImageView profileImgIv;
     private TextView displayNameTv;
     private TextView emailTv;
+    private Button signOutBtn;
 
     // Firebase Auth
     private FirebaseAuth mAuth;
@@ -42,6 +45,18 @@ public class ProfileFragment extends Fragment {
         displayNameTv=v.findViewById(R.id.displayname_tv);
         // configure email textview
         emailTv=v.findViewById(R.id.email_tv);
+        // configure sign out button
+        signOutBtn=v.findViewById(R.id.signout_btn);
+        // give on click listener
+        signOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get reference to the calling activity HomeActivity
+                HomeActivity homeActivity=(HomeActivity)getActivity();
+                // sign out now
+                homeActivity.signOut();
+            }
+        });
 
         /* CONFIGURE FIREBASE AUTH*/
         mAuth=FirebaseAuth.getInstance();

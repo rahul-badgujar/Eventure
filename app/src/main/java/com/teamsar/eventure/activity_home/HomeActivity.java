@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +21,6 @@ import com.teamsar.eventure.activity_home.fragments_bnb.NewEventFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.NotificationFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
-import com.teamsar.eventure.activity_login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -83,13 +81,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logout_menu_item: // if logout button is pressed
+            case R.id.signout_menu_item: // if logout button is pressed
                 signOut();  // sign out
             default: return super.onOptionsItemSelected(item);
         }
     }
 
-    private void signOut() {
+    public void signOut() {
         mAuth.signOut();    // signout the user from FirebaseAuth
         // but signing out from FirebaseAuth is not enough for Google Sign in
         // we also need to signout the user using Google Sign in Client
