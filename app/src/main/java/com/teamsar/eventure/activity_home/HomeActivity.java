@@ -104,18 +104,18 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // switch to home fragment once sign out
-                switchToFragment(new HomeFragment());
+                bottomNavigationView.setSelectedItemId(R.id.home);
             }
         });
 
     }
 
-    boolean switchToFragment(Fragment fragment) {
-        if(fragment!=null) {
+    boolean switchToFragment(Class<? extends Fragment> fragmentClass) {
+        if(fragmentClass!=null) {
             // replace the fragment using fragment manager
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragments_container, fragment)
+                    .replace(R.id.fragments_container, fragmentClass, null)
                     .commit();
             return true;
         }
@@ -127,19 +127,19 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         // switch to fragment depending on BNB item selected
         switch (item.getItemId()){
             case R.id.home:
-                return switchToFragment(new HomeFragment());
+                return switchToFragment(HomeFragment.class);
             case R.id.timeline:
-                return switchToFragment(new TimelineFragment());
+                return switchToFragment(TimelineFragment.class);
             case R.id.add:
                 //return switchToFragment(new NewEventFragment());
                 startActivity(new Intent(HomeActivity.this, AddNewEvent.class));
                 return true;
             case R.id.notifications:
-                return switchToFragment(new NotificationFragment());
+                return switchToFragment(NotificationFragment.class);
             case R.id.profile:
                 // if user is logged in, show him profile
                 if(mAuth.getCurrentUser()!=null) {
-                    return switchToFragment(new ProfileFragment());
+                    return switchToFragment(ProfileFragment.class);
                 }   // otherwise launch login activity
                 else {
                     Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
