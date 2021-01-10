@@ -63,11 +63,4 @@ dependencies {
     // picasso library for network images loading caching
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    // auto-complete hash-tag and mention dependency added  from
-    // https://github.com/hendraanggrian/socialview/ latest version: 0.2
-    implementation "com.hendraanggrian.appcompat:socialview-commons:0.2"
-    implementation "com.hendraanggrian.appcompat:socialview:0.2"
-    //Added the image cropper api from https://github.com/ArthurHub/Android-Image-Cropper
-    //to crop the images
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }
