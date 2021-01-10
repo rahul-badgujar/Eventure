@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.teamsar.eventure.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -132,8 +130,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.profile:
                 // if user is logged in, show him profile
                 if(mAuth.getCurrentUser()!=null) {
-                    //toast to tell user to login
-                    Toast.makeText(this, "You need to first login!", Toast.LENGTH_LONG).show();
                     return switchToFragment(new ProfileFragment());
                 }   // otherwise launch login activity
                 else {
