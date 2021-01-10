@@ -1,9 +1,11 @@
 package com.teamsar.eventure.activity_home.fragments_bnb;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +50,20 @@ public class ProfileFragment extends Fragment {
         // if user is logged in
         if(currentUser!=null) {
             // load the profile image in profile picture imageview
-            Picasso.get().
-                    load(currentUser.getPhotoUrl())
-                    .placeholder(R.drawable.ic_baseline_account_circle_24)
-                    .error(R.drawable.ic_baseline_account_circle_24)
-                    .into(profileImgIv);
+            Uri photoUrl=currentUser.getPhotoUrl();
+            /* this photoUrl is 90px size photo Url, we want to request of higher resolution*/
+            if(photoUrl!=null) {
+                // get the uri in string format
+                String photoUrlStr=photoUrl.toString();
+                // convert the uri string to required pixel size
+                photoUrlStr= googlePhotoUrlOfPixelSize(photoUrlStr,360);
+                // load the picture in profile picture imageview
+                Picasso.get().
+                        load(photoUrlStr)
+                        .placeholder(R.drawable.ic_baseline_account_circle_24)  // placeholder for network image
+                        .error(R.drawable.ic_baseline_account_circle_24)    // if placeholder for error
+                        .into(profileImgIv);
+            }
             // load user name in display name textview
             displayNameTv.setText(currentUser.getDisplayName());
             // load user email in email textview
@@ -60,5 +71,19 @@ public class ProfileFragment extends Fragment {
         }
 
         return v;
+    }
+
+    private String googlePhotoUrlOfPixelSize(String photoUrl, int pxWidth) {
+        // Variable holding the original String portion of the url that will be replaced
+        String originalPieceOfUrl = "s96-c";
+
+        // Variable holding the new String portion of the url that does the replacing, to improve image quality
+        String newPieceOfUrlToAdd = "s"+pxWidth+"-c";
+
+        // Replace the original part of the Url with the new part
+        String newPhotoUrl = photoUrl.replace(originalPieceOfUrl, newPieceOfUrlToAdd);
+
+        // now the newPhotoUrl consist url of given pixel size
+        return newPhotoUrl;
     }
 }
