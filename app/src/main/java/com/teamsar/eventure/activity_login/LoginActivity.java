@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.teamsar.eventure.R;
 import com.teamsar.eventure.activity_home.HomeActivity;
@@ -67,7 +66,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(LoginActivity.this, "Logged in as guest", Toast.LENGTH_SHORT).show();
-                launchHomeActivity();
+                // sign in skipped, finish the activity
+                finish();
             }
         });
 
@@ -163,34 +163,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.i(LOG_TAG, "Firebase sign in successful: " + currentGoogleAccount.getEmail());
                     Toast.makeText(getApplicationContext(), mAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-                    // launch home activity
-                    launchHomeActivity();
+                    // sign in successful, finish the activity
+                    finish();
                 } else {
                     Log.i(LOG_TAG, "Firebase sign in failed ");
                     Toast.makeText(getApplicationContext(), "Sign in failed, retry", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Check if user is already signed in and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser(); // get the current user account
-        // if currentUser is null, it means their is no used logged in currently
-        if (currentUser != null) {
-            Toast.makeText(getApplicationContext(), currentUser.getEmail(), Toast.LENGTH_SHORT).show();
-            // start Home Activity
-            Log.i(LOG_TAG, "User already logged in: " + currentUser.getEmail());
-            launchHomeActivity();
-        }
-    }
-
-    private void launchHomeActivity() {
-        // this activity will be launched by HomeActivity
-        // so finish will get HomeActivity on top
-        finish();
     }
 
 

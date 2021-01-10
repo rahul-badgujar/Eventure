@@ -1,14 +1,18 @@
 package com.teamsar.eventure.activity_home;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.teamsar.eventure.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,6 +32,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
     // Log Tag
     public final String LOG_TAG="context(HomeActivity)";
+
+    // Request Codes
+    public static final int SIGN_IN_REQUEST_FOR_PROFILE=100;
 
     // Firebase Auth Objects
     private FirebaseAuth mAuth;
@@ -135,16 +142,35 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                     return switchToFragment(new ProfileFragment());
                 }   // otherwise launch login activity
                 else {
-                    launchLoginActivity();
+                    Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
+                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_FOR_PROFILE);
                     return true;
                 }
         }
         return false;
     }
 
-    private void launchLoginActivity() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case SIGN_IN_REQUEST_FOR_PROFILE:   // got result for sign in request for profile
+                // check if user signed in or not
+                if(mAuth.getCurrentUser()==null) {  // user not signed in
+                    // go back to home fragment
+                    switchToFragment(new HomeFragment());
+                } else {
+                    // show the profile fragment
+                    switchToFragment(new ProfileFragment());
+                }
+                break;
+        }
+    }
+
+    private void launchLoginActivityWithRequestCode(int requestCode) {
         // launch LoginActivity using intent
         Intent intentToLoginActivity=new Intent(HomeActivity.this, LoginActivity.class);
-        startActivity(intentToLoginActivity);
+        // launch login activity with request code
+        startActivityForResult(intentToLoginActivity, requestCode);
     }
 }
