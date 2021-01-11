@@ -48,7 +48,7 @@ public class AddNewEvent extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AddNewEvent.this, HomeActivity.class));
+                // simply finishing this activity will cause homescreen to appear
                 finish();
             }
         });
