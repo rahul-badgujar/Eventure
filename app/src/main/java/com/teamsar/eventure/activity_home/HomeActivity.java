@@ -131,9 +131,16 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.timeline:
                 return switchToFragment(TimelineFragment.class);
             case R.id.add:
-                //return switchToFragment(new NewEventFragment());
-                startActivity(new Intent(HomeActivity.this, AddNewEvent.class));
-                return true;
+                // if user is logged in, show him profile
+                if(mAuth.getCurrentUser()!=null) {
+                    startActivity(new Intent(HomeActivity.this, AddNewEvent.class));
+                    return true;
+                }   // otherwise launch AddNewEvent activity
+                else {
+                    Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
+                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_FOR_PROFILE);
+                    return true;
+                }
             case R.id.notifications:
                 return switchToFragment(NotificationFragment.class);
             case R.id.profile:
