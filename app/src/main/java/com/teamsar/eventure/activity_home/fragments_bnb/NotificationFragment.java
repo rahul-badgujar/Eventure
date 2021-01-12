@@ -12,7 +12,7 @@ import com.teamsar.eventure.R;
 
 
 public class NotificationFragment extends Fragment {
-
+    public static final String FRAGMENT_TAG="NOTIFICATION_FRAGMENT_TAG";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

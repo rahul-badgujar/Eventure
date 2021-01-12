@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.teamsar.eventure.R;
 
 public class TimelineFragment extends Fragment {
-
+    public static final String FRAGMENT_TAG="TIMELINE_FRAGMENT_TAG";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -28,6 +28,8 @@ import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
 import com.teamsar.eventure.activity_login.LoginActivity;
 
+import java.sql.Time;
+
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // Log Tag
@@ -55,7 +57,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         // firstly load HomeFragment as default opened fragment for BNB
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragments_container, HomeFragment.class,null)
+                // we do not add this fragment to backstack, as it should directly replace the container, not as a layer
+                .commit();
 
         /* CONFIGURE FIREBASE AUTH */
         // instantiate firebase auth instance
@@ -110,36 +116,24 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    boolean switchToFragment(Class<? extends Fragment> fragmentClass) {
-        if(fragmentClass!=null) {
-            // replace the fragment using fragment manager
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragments_container, fragmentClass, null)
-                    .commit();
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // switch to fragment depending on BNB item selected
         switch (item.getItemId()){
             case R.id.home:
-                return switchToFragment(HomeFragment.class);
+                return switchToFragment(HomeFragment.class, HomeFragment.FRAGMENT_TAG);
             case R.id.timeline:
-                return switchToFragment(TimelineFragment.class);
+                return switchToFragment(TimelineFragment.class, TimelineFragment.FRAGMENT_TAG);
             case R.id.add:
                 //return switchToFragment(new NewEventFragment());
                 startActivity(new Intent(HomeActivity.this, AddNewEvent.class));
                 return true;
             case R.id.notifications:
-                return switchToFragment(NotificationFragment.class);
+                return switchToFragment(NotificationFragment.class, NotificationFragment.FRAGMENT_TAG);
             case R.id.profile:
                 // if user is logged in, show him profile
                 if(mAuth.getCurrentUser()!=null) {
-                    return switchToFragment(ProfileFragment.class);
+                    return switchToFragment(ProfileFragment.class, ProfileFragment.FRAGMENT_TAG);
                 }   // otherwise launch login activity
                 else {
                     Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
@@ -173,4 +167,21 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         // launch login activity with request code
         startActivityForResult(intentToLoginActivity, requestCode);
     }
+
+    boolean switchToFragment(Class<? extends Fragment> fragmentClass, String tagName) {
+        // TODO: solve issue with BNB selected icon not changing
+        if(fragmentClass!=null) {
+            // replace the fragment using fragment manager
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragments_container, fragmentClass,null)
+                    .addToBackStack(tagName)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+
+
 }
