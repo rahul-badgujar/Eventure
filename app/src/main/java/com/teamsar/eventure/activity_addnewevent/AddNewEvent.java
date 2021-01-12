@@ -72,7 +72,6 @@ public class AddNewEvent extends AppCompatActivity {
         //else we need to redirect it to the HomeActivity
         else{
             Toast.makeText(this, "Try Again!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(AddNewEvent.this, HomeActivity.class));
             finish();
         }
     }
