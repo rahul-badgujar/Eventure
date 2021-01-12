@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,15 +27,13 @@ import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
 import com.teamsar.eventure.activity_login.LoginActivity;
 
-import java.sql.Time;
-
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // Log Tag
     public final String LOG_TAG="context(HomeActivity)";
 
     // Request Codes
-    public static final int SIGN_IN_REQUEST_FOR_PROFILE=100;
+    public static final int SIGN_IN_REQUEST_CODE =100;
 
     // Firebase Auth Objects
     private FirebaseAuth mAuth;
@@ -132,7 +129,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 }   // otherwise launch AddNewEvent activity
                 else {
                     Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
-                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_FOR_PROFILE);
+                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_CODE);
                     return true;
                 }
             case R.id.notifications:
@@ -144,7 +141,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 }   // otherwise launch login activity
                 else {
                     Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
-                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_FOR_PROFILE);
+                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_CODE);
                     return true;
                 }
         }
@@ -155,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case SIGN_IN_REQUEST_FOR_PROFILE:   // got result for sign in request for profile
+            case SIGN_IN_REQUEST_CODE:   // got result for sign in request for profile
                 // check if user signed in or not
                 if(mAuth.getCurrentUser()==null) {  // user not signed in
                     // go back to home fragment
