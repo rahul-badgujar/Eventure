@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,40 +29,46 @@ import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
 import com.teamsar.eventure.activity_login.LoginActivity;
 
-import java.sql.Time;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // Log Tag
-    public final String LOG_TAG="context(HomeActivity)";
+    public final String LOG_TAG="ACTIVITY_MAIN_CONTEXT";
 
     // Request Codes
-    public static final int SIGN_IN_REQUEST_FOR_PROFILE=100;
+    public static final int SIGN_IN_REQUEST_CODE =100;
 
     // Firebase Auth Objects
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+
+    private FragmentManager fragmentManager;
+
     // UI elements
     private BottomNavigationView bottomNavigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.i(LOG_TAG, "onCreate()");
+
         /* SET UP UI ELEMENTS */
+        // configure fragment manager
+        fragmentManager=getSupportFragmentManager();
+
         // configure BNB
         bottomNavigationView = findViewById(R.id.bottomNavigationBar);
         // implemented BottomNavigationView.OnNavigationItemSelectedListener for adding listener
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        // load HomeFragment as first fragment
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
-        // firstly load HomeFragment as default opened fragment for BNB
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragments_container, HomeFragment.class,null)
-                // we do not add this fragment to backstack, as it should directly replace the container, not as a layer
-                .commit();
 
         /* CONFIGURE FIREBASE AUTH */
         // instantiate firebase auth instance
@@ -118,12 +125,15 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Class fragmentToSwitchTo=null;
         // switch to fragment depending on BNB item selected
         switch (item.getItemId()){
             case R.id.home:
-                return switchToFragment(HomeFragment.class, HomeFragment.FRAGMENT_TAG);
+                fragmentToSwitchTo=HomeFragment.class;
+                break;
             case R.id.timeline:
-                return switchToFragment(TimelineFragment.class, TimelineFragment.FRAGMENT_TAG);
+                fragmentToSwitchTo=TimelineFragment.class;
+                break;
             case R.id.add:
                 // if user is logged in, show him profile
                 if(mAuth.getCurrentUser()!=null) {
@@ -132,30 +142,32 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 }   // otherwise launch AddNewEvent activity
                 else {
                     Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
-                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_FOR_PROFILE);
+                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_CODE);
                     return true;
                 }
             case R.id.notifications:
-                return switchToFragment(NotificationFragment.class, NotificationFragment.FRAGMENT_TAG);
+                fragmentToSwitchTo=NotificationFragment.class;
+                break;
             case R.id.profile:
                 // if user is logged in, show him profile
                 if(mAuth.getCurrentUser()!=null) {
-                    return switchToFragment(ProfileFragment.class, ProfileFragment.FRAGMENT_TAG);
+                    fragmentToSwitchTo=ProfileFragment.class;
+                    break;
                 }   // otherwise launch login activity
                 else {
                     Toast.makeText(this, "Please sign in to access this action", Toast.LENGTH_SHORT).show();
-                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_FOR_PROFILE);
+                    launchLoginActivityWithRequestCode(SIGN_IN_REQUEST_CODE);
                     return true;
                 }
         }
-        return false;
+        return switchToFragment(fragmentToSwitchTo);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case SIGN_IN_REQUEST_FOR_PROFILE:   // got result for sign in request for profile
+            case SIGN_IN_REQUEST_CODE:   // got result for sign in request for profile
                 // check if user signed in or not
                 if(mAuth.getCurrentUser()==null) {  // user not signed in
                     // go back to home fragment
@@ -175,20 +187,51 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         startActivityForResult(intentToLoginActivity, requestCode);
     }
 
-    boolean switchToFragment(Class<? extends Fragment> fragmentClass, String tagName) {
-        // TODO: solve issue with BNB selected icon not changing
+    boolean switchToFragment(Class<? extends  Fragment> fragmentClass) {
         if(fragmentClass!=null) {
             // replace the fragment using fragment manager
-            getSupportFragmentManager()
+            fragmentManager
                     .beginTransaction()
-                    .add(R.id.fragments_container, fragmentClass,null)
-                    .addToBackStack(tagName)
+                    .replace(R.id.fragments_container, fragmentClass, null)
                     .commit();
             return true;
         }
         return false;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(LOG_TAG, "onStart()");
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(LOG_TAG, "onRestart()");
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(LOG_TAG, "onResume()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(LOG_TAG, "onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(LOG_TAG, "onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(LOG_TAG, "onDestroy()");
+    }
 }

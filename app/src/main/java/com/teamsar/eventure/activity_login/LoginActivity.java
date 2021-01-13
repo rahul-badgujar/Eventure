@@ -2,6 +2,8 @@ package com.teamsar.eventure.activity_login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     // Request Codes for Intent Results
     static final int RC_SIGN_IN = 100;
 
+
+
     // UI Elements
     private SignInButton googleSignInBtn;
     private TextView skipTv;
@@ -44,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     // Google Sign in Auth Objects
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+
+
 
 
     @Override
@@ -70,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 
 
         /* CONFIGURE FIREBASE AUTH */
@@ -102,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // check the request code
         if (requestCode == RC_SIGN_IN) {    // if AccountSelectionIntent has send result
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);   // get the Task for GoogleSignIn Account from intent data
