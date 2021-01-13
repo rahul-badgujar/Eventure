@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // Log tag for Logging
-    static final String LOG_TAG = "context(LoginActivity)";
+    public final String LOG_TAG="ACTIVITY_LOGIN_CONTEXT";
 
     // constants
 

@@ -34,7 +34,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // Log Tag
-    public final String LOG_TAG="ACTIVITY_MAIN_CONTEXT";
+    public final String LOG_TAG="ACTIVITY_HOME_CONTEXT";
 
     // Request Codes
     public static final int SIGN_IN_REQUEST_CODE =100;
