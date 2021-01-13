@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -160,6 +161,12 @@ public class AddNewEvent extends AppCompatActivity {
                             mHashTagRef.child(tag.toLowerCase()).child(postId).setValue(map);
                         }
                     }
+
+                    /*
+                    Added sound to when something is posted.
+                     */
+                    MediaPlayer ring= MediaPlayer.create(AddNewEvent.this,R.raw.post_sound);
+                    ring.start();
 
                     // task is successful
                     progressDialog.setMessage("Uploaded");
