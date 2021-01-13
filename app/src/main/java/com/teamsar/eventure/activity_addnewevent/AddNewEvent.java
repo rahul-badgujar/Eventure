@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -156,7 +157,15 @@ public class AddNewEvent extends AppCompatActivity {
                         }
                     }
 
-                    pd.dismiss();               //Dismissing the progress dialogue
+                    pd.dismiss();//Dismissing the progress dialogue
+
+                    /*
+                    Added sound to when something is posted.
+                     */
+                    MediaPlayer ring= MediaPlayer.create(AddNewEvent.this,R.raw.post_sound);
+                    ring.start();
+
+
                     startActivity(new Intent(AddNewEvent.this, HomeActivity.class));
                     finish();
                 }
