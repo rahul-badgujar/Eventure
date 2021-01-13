@@ -1,27 +1,46 @@
-package com.teamsar.eventure.activity_addnewevent;
+        package com.teamsar.eventure.activity_addnewevent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.teamsar.eventure.R;
 import com.teamsar.eventure.activity_home.HomeActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class AddNewEvent extends AppCompatActivity {
 
+    //Tag for testing purpose
+    private static final String TAG = "AddNewEvent";
     //global URI variable for image;
     private Uri imageURI;
+    private String imageURl;
 
     //Set up UI elements
     private ImageView cancel;
@@ -48,14 +67,100 @@ public class AddNewEvent extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // simply finishing this activity will cause homescreen to appear
+                // simply finishing this activity will cause home screen to appear
                 finish();
             }
         });
 
-        //Used for cropping an image from the gallery and add it to the imageView
+        /*set on click listener to post the image and save the file to storage and in the
+        RealTime Database as per the rules */
+
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upload();
+            }
+        });
+
+        /*Used for cropping an image from the gallery and add it to the imageView
+        external implementation which is used to auto crop and select pics
+         */
         CropImage.activity().start(AddNewEvent.this);
 
+
+    }
+
+
+    /*
+    Method written to upload the image to the Firebase storage
+    and Add all the details of the post such as:
+                                                Description
+                                                ImageURl
+                                                postID
+                                                publisher name
+     */
+    private void upload() {
+        /*
+        progress dialogue to show the progress of uploading pic.
+         */
+        ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("Uploading");
+        pd.show();
+
+        if (imageURI!=null){
+            StorageReference filePath = FirebaseStorage.getInstance().getReference("Posts").child(System.currentTimeMillis()+"."+getFileExtension(imageURI));
+            StorageTask uploadTask = filePath.putFile(imageURI);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if (!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return filePath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Uri downloadUri = task  .getResult();
+                    assert downloadUri != null;
+                    imageURl = downloadUri.toString();
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+                    String postId = ref.push().getKey();
+
+                    /*
+                    HashMap to store the value in the RealtimeDatabase about the information of the user
+                     */
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("postId", postId);
+                    map.put("imageURL",imageURl);
+                    map.put("description", description.getText().toString());
+                    map.put("publisher", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    //Testing--->Log.d(TAG, "onComplete: "+ map.toString());
+                    ref.child(Objects.requireNonNull(postId)).setValue(map);
+                    pd.dismiss();               //Dismissing the progress dialogue
+                    startActivity(new Intent(AddNewEvent.this, HomeActivity.class));
+                    finish();
+                }
+
+                /*
+                If the task is Failure the make the user know
+                 */
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AddNewEvent.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            Toast.makeText(this, "No image was selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*
+    Function to get the extension of the image
+     */
+    private String getFileExtension(Uri uri) {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(uri));
     }
 
     //method to check and upload image to the image view.
@@ -66,6 +171,7 @@ public class AddNewEvent extends AppCompatActivity {
         then set the image to the image selected*/
         if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode==RESULT_OK){
             CropImage.ActivityResult result= CropImage.getActivityResult(data);
+            assert result != null;
             imageURI= result.getUri();
             image.setImageURI(imageURI);
         }
