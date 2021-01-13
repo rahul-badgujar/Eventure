@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.teamsar.eventure.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,20 +29,19 @@ import com.teamsar.eventure.activity_home.fragments_bnb.NotificationFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
 import com.teamsar.eventure.activity_login.LoginActivity;
+import com.teamsar.eventure.services.AuthenticationClient;
 
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // Log Tag
-    public final String LOG_TAG="ACTIVITY_MAIN_CONTEXT";
+    public final String LOG_TAG="activity-home-context";
 
     // Request Codes
     public static final int SIGN_IN_REQUEST_CODE =100;
 
-    // Firebase Auth Objects
-    private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
+    private AuthenticationClient authClient;
 
 
     private FragmentManager fragmentManager;
@@ -70,23 +70,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
 
 
-        /* CONFIGURE FIREBASE AUTH */
-        // instantiate firebase auth instance
-        mAuth=FirebaseAuth.getInstance();
-        // configure request for Google Sign In
-        createRequest();
+        /* CONFIGURE AUTH CLIENT */
+        authClient=new AuthenticationClient(this);
     }
 
-    private void createRequest() {
-        // build GoogleSignInOption using oAuth Client ID
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(getString(R.string.oAuth_client_id))    // providing oAuth Client ID
-                .requestEmail() // requesting Email to be selected
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);    // Creating googleSignInClient from options specified in gso
-
-    }
 
 
 
@@ -110,17 +97,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     public void signOut() {
-        mAuth.signOut();    // signout the user from FirebaseAuth
-        // but signing out from FirebaseAuth is not enough for Google Sign in
-        // we also need to signout the user using Google Sign in Client
-        mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+        authClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // switch to home fragment once sign out
                 bottomNavigationView.setSelectedItemId(R.id.home);
             }
         });
-
     }
 
     @Override
@@ -136,7 +119,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.add:
                 // if user is logged in, show him profile
-                if(mAuth.getCurrentUser()!=null) {
+                if(authClient.isUserSignedIn()) {
                     startActivity(new Intent(HomeActivity.this, AddNewEvent.class));
                     return true;
                 }   // otherwise launch AddNewEvent activity
@@ -150,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.profile:
                 // if user is logged in, show him profile
-                if(mAuth.getCurrentUser()!=null) {
+                if(authClient.isUserSignedIn()) {
                     fragmentToSwitchTo=ProfileFragment.class;
                     break;
                 }   // otherwise launch login activity
@@ -169,12 +152,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         switch (requestCode) {
             case SIGN_IN_REQUEST_CODE:   // got result for sign in request for profile
                 // check if user signed in or not
-                if(mAuth.getCurrentUser()==null) {  // user not signed in
-                    // go back to home fragment
-                    bottomNavigationView.setSelectedItemId(R.id.home);
-                } else {
+                if(authClient.isUserSignedIn()) {
                     // show the profile fragment
                     bottomNavigationView.setSelectedItemId(R.id.profile);
+
+                } else {
+                    // go back to home fragment
+                    bottomNavigationView.setSelectedItemId(R.id.home);
                 }
                 break;
         }

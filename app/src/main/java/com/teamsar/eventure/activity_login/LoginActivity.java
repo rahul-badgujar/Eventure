@@ -27,12 +27,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.teamsar.eventure.R;
 import com.teamsar.eventure.activity_home.HomeActivity;
+import com.teamsar.eventure.services.AuthenticationClient;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     // Log tag for Logging
-    static final String LOG_TAG = "context(LoginActivity)";
+    public final String LOG_TAG="activity-login-context";
 
     // constants
 
@@ -45,9 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private SignInButton googleSignInBtn;
     private TextView skipTv;
 
-    // Google Sign in Auth Objects
-    private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseAuth mAuth;
+    private AuthenticationClient authClient;
 
 
 
@@ -79,29 +78,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        /* CONFIGURE FIREBASE AUTH */
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance(); // get the instance of Firebase Auth
-        // Configure Google Sign In
-        createRequest();    // create Google Sign In request
-    }
-
-
-    // to create Sign in request
-    private void createRequest() {
-        // build Default GoogleSignInOption
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.oAuth_client_id))    // providing oAuth Client ID
-                .requestEmail() // requesting Email to be selected
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);    // Creating googleSignInClient from options specified in gso
+        /* CONFIGURE AUTHENTICATION CLIENT */
+        authClient=new AuthenticationClient(this);
     }
 
     // to sign in user
     private void signIn() {
         // this will show up a popup to user with email id to be selected to login
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();    // intent to select google account
+        Intent signInIntent = authClient.getGoogleSignInIntent();    // intent to select google account
         startActivityForResult(signInIntent, RC_SIGN_IN);   // launch the intent
     }
 
@@ -111,20 +95,20 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // check the request code
         if (requestCode == RC_SIGN_IN) {    // if AccountSelectionIntent has send result
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);   // get the Task for GoogleSignIn Account from intent data
             try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount currentGoogleAccount = task.getResult(ApiException.class);
+
                 // if currentGoogleAccount is null, it means their is no used logged in currently
+                GoogleSignInAccount currentGoogleAccount=authClient.getSignedInGoogleAccountFromIntent(data);
                 if (currentGoogleAccount != null) {
                     Log.i(LOG_TAG, "Google Account selected: " + currentGoogleAccount.getEmail());
                     // google account is selected successfully, now we sign in using firebase
-                    firebaseSignInUsingGoogleAccount(currentGoogleAccount);
+                    firebaseSignInUsingGoogleAccount();
                 } else {
                     Toast.makeText(getApplicationContext(), "Couldn't select Google Account", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (ApiException e) {
+                // TODO: define user defined exceptions for this codes
                 String message; // error message to be shown to user
                 switch (e.getStatusCode()) {    // assign error message depending on Error Code
                     case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
@@ -155,20 +139,21 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In failed, show error to user using toast
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Unknown Exception: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void firebaseSignInUsingGoogleAccount(GoogleSignInAccount currentGoogleAccount) {
-        // get credentials for firebase login using google account selected
-        AuthCredential credential = GoogleAuthProvider.getCredential(currentGoogleAccount.getIdToken(), null);
+    private void firebaseSignInUsingGoogleAccount() {
+        Task<AuthResult> authResultTask=authClient.signInToFirebaseUsingGoogleAccount();
         // sign in with firebase using credentials
-        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        authResultTask.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Log.i(LOG_TAG, "Firebase sign in successful: " + currentGoogleAccount.getEmail());
-                    Toast.makeText(getApplicationContext(), mAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "Firebase sign in successful: " + authClient.getCurrentUser().getEmail());
+                    Toast.makeText(getApplicationContext(), authClient.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
                     // sign in successful, finish the activity
                     finish();
                 } else {
