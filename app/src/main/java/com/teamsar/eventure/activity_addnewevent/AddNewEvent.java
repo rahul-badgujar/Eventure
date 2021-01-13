@@ -32,6 +32,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class AddNewEvent extends AppCompatActivity {
@@ -137,6 +138,24 @@ public class AddNewEvent extends AppCompatActivity {
                     map.put("publisher", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                     //Testing--->Log.d(TAG, "onComplete: "+ map.toString());
                     ref.child(Objects.requireNonNull(postId)).setValue(map);
+
+
+                    /*
+                    Hashtags for search fragments with the help of SocialAutoCompleteTextView
+                     */
+                    DatabaseReference mHashTagRef = FirebaseDatabase.getInstance().getReference().child("HashTags");
+                    List<String> hashTags = description.getHashtags();
+                    if (!hashTags.isEmpty()){
+                        for (String tag : hashTags){
+                            map.clear();
+
+                            map.put("tag" , tag.toLowerCase());
+                            map.put("postId" , postId);
+
+                            mHashTagRef.child(tag.toLowerCase()).child(postId).setValue(map);
+                        }
+                    }
+
                     pd.dismiss();               //Dismissing the progress dialogue
                     startActivity(new Intent(AddNewEvent.this, HomeActivity.class));
                     finish();
