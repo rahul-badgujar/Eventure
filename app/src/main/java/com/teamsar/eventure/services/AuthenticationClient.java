@@ -14,6 +14,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.teamsar.eventure.exceptions.auth_exceptions.AuthException;
+import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionNoGoogleAccountSignedIn;
 
 public class AuthenticationClient {
 
@@ -32,12 +34,12 @@ public class AuthenticationClient {
 
     // getter for firebase auth object
     public FirebaseAuth getFirebaseAuthInstance() {
-        return firebaseAuth;
+        return this.firebaseAuth;
     }
 
     // getter for current user
     public FirebaseUser getCurrentUser() {
-        return firebaseAuth.getCurrentUser();
+        return this.firebaseAuth.getCurrentUser();
     }
 
     // method to check if user is signed in
@@ -79,20 +81,24 @@ public class AuthenticationClient {
     }
 
     // method to get current signed in google account
-    public GoogleSignInAccount getCurrentSignedInGoogleAccount() {
+    public GoogleSignInAccount getCurrentSignedInGoogleAccount() throws AuthExceptionNoGoogleAccountSignedIn {
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this.context);
+        if(account==null)
+            throw new AuthExceptionNoGoogleAccountSignedIn();
         return account;
     }
 
     // method to sign in to firebase using google account
-    public Task<AuthResult> signInToFirebaseUsingGoogleAccount() {
+    public Task<AuthResult> signInToFirebaseUsingGoogleAccount() throws AuthException {
         GoogleSignInAccount currentGoogleAccount=getCurrentSignedInGoogleAccount();
-        if(currentGoogleAccount!=null) {
+        if(currentGoogleAccount==null) {
+            throw new AuthExceptionNoGoogleAccountSignedIn();
+        }
+        else{
             // get credentials for firebase login using google account selected
             AuthCredential credential = GoogleAuthProvider.getCredential(currentGoogleAccount.getIdToken(), null);
             // sign in with firebase using credentials
             return firebaseAuth.signInWithCredential(credential);
         }
-        return null;
     }
 }

@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.teamsar.eventure.R;
+import com.teamsar.eventure.exceptions.auth_exceptions.AuthException;
 import com.teamsar.eventure.services.AuthenticationClient;
 
 public class LoginActivity extends AppCompatActivity {
@@ -139,22 +140,32 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseSignInUsingGoogleAccount() {
-        Task<AuthResult> authResultTask=authClient.signInToFirebaseUsingGoogleAccount();
-        // sign in with firebase using credentials
-        authResultTask.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.i(LOG_TAG, "Firebase sign in successful: " + authClient.getCurrentUser().getEmail());
-                    Toast.makeText(getApplicationContext(), authClient.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-                    // sign in successful, finish the activity
-                    finish();
-                } else {
-                    Log.i(LOG_TAG, "Firebase sign in failed ");
-                    Toast.makeText(getApplicationContext(), "Sign in failed, retry", Toast.LENGTH_SHORT).show();
+        Task<AuthResult> authResultTask= null;
+        try {
+            authResultTask = authClient.signInToFirebaseUsingGoogleAccount();
+            // sign in with firebase using credentials
+            authResultTask.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.i(LOG_TAG, "Firebase sign in successful: " + authClient.getCurrentUser().getEmail());
+                        Toast.makeText(getApplicationContext(), authClient.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                        // sign in successful, finish the activity
+                        finish();
+                    } else {
+                        Log.i(LOG_TAG, "Firebase sign in failed ");
+                        Toast.makeText(getApplicationContext(), "Sign in failed, retry", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        } catch (AuthException e) {
+            Log.i(LOG_TAG, e.getMessage());
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.i(LOG_TAG, "Unknown Exception: "+e.getMessage());
+            Toast.makeText(getApplicationContext(), "Unknown Exception: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
