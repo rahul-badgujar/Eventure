@@ -17,6 +17,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class AuthenticationClient {
 
+    static final String oAuthToken="887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com";
+
     public AuthenticationClient(Context context) {
         this.context=context;
         this.firebaseAuth= FirebaseAuth.getInstance();
@@ -47,7 +49,7 @@ public class AuthenticationClient {
     private GoogleSignInClient createGoogleSignInRequest() {
         // build GoogleSignInOption using oAuth Client ID
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(getString(R.string.oAuth_client_id))    // providing oAuth Client ID
+                .requestIdToken(oAuthToken)    // providing oAuth Client ID
                 .requestEmail() // requesting Email to be selected
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.

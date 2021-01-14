@@ -140,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
             } catch (Exception e) {
+                Log.i(LOG_TAG, "Unknown Exception: "+e.getMessage());
                 Toast.makeText(getApplicationContext(), "Unknown Exception: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
