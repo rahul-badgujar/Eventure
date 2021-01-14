@@ -1,4 +1,4 @@
-package com.teamsar.eventure.activity_home.fragments_bnb;
+package com.teamsar.eventure.activities.activity_home.fragments_bnb;
 
 import android.os.Bundle;
 

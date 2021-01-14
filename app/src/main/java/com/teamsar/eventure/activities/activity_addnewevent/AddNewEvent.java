@@ -1,4 +1,4 @@
-package com.teamsar.eventure.activity_addnewevent;
+package com.teamsar.eventure.activities.activity_addnewevent;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,10 +13,7 @@ import android.widget.Toast;
 
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.teamsar.eventure.R;
-import com.teamsar.eventure.activity_home.HomeActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
-
-import java.net.URI;
 
 public class AddNewEvent extends AppCompatActivity {
 

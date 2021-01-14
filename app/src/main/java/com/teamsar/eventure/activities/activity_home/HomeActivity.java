@@ -1,4 +1,4 @@
-package com.teamsar.eventure.activity_home;
+package com.teamsar.eventure.activities.activity_home;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,24 +14,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.teamsar.eventure.R;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.teamsar.eventure.activity_addnewevent.AddNewEvent;
-import com.teamsar.eventure.activity_home.fragments_bnb.HomeFragment;
-import com.teamsar.eventure.activity_home.fragments_bnb.NotificationFragment;
-import com.teamsar.eventure.activity_home.fragments_bnb.ProfileFragment;
-import com.teamsar.eventure.activity_home.fragments_bnb.TimelineFragment;
-import com.teamsar.eventure.activity_login.LoginActivity;
+import com.teamsar.eventure.activities.activity_addnewevent.AddNewEvent;
+import com.teamsar.eventure.activities.activity_home.fragments_bnb.HomeFragment;
+import com.teamsar.eventure.activities.activity_home.fragments_bnb.NotificationFragment;
+import com.teamsar.eventure.activities.activity_home.fragments_bnb.ProfileFragment;
+import com.teamsar.eventure.activities.activity_home.fragments_bnb.TimelineFragment;
+import com.teamsar.eventure.activities.activity_login.LoginActivity;
 import com.teamsar.eventure.services.AuthenticationClient;
-
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

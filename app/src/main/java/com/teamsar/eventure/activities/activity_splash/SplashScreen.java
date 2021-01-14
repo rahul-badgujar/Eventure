@@ -1,12 +1,11 @@
-package com.teamsar.eventure.activity_splash;
+package com.teamsar.eventure.activities.activity_splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.teamsar.eventure.activity_home.HomeActivity;
-import com.teamsar.eventure.activity_login.LoginActivity;
+import com.teamsar.eventure.activities.activity_home.HomeActivity;
 
 
 public class SplashScreen extends AppCompatActivity {
