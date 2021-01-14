@@ -14,9 +14,5 @@ public class AuthExceptionNoGoogleAccountSignedIn extends AuthException {
         super(message);
     }
 
-    @Nullable
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
+
 }
