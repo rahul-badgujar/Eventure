@@ -1,11 +1,10 @@
-package com.teamsar.eventure.activity_home.fragments_bnb;
+package com.teamsar.eventure.activities.activity_home.fragments_bnb;
 
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.teamsar.eventure.R;
-import com.teamsar.eventure.activity_home.HomeActivity;
+import com.teamsar.eventure.activities.activity_home.HomeActivity;
 
 
 public class ProfileFragment extends Fragment {

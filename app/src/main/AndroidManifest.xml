@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventure">
-        <activity android:name=".activity_addnewevent.AddNewEvent"></activity>
+        <activity android:name=".activities.activity_addnewevent.AddNewEvent"></activity>
         // activity for CropperImage
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
         <activity
-            android:name=".activity_home.HomeActivity"
+            android:name=".activities.activity_home.HomeActivity"
             android:theme="@style/Theme.Eventure">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity_splash.SplashScreen"
+            android:name=".activities.activity_splash.SplashScreen"
             android:theme="@style/Theme.Eventure.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity_login.LoginActivity"
+            android:name=".activities.activity_login.LoginActivity"
             android:theme="@style/Theme.Eventure.NoActionBar"></activity>
     </application>
 

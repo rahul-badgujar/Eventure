@@ -1,21 +1,18 @@
-package com.teamsar.eventure.activity_addnewevent;
+package com.teamsar.eventure.activities.activity_addnewevent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +26,6 @@ import com.google.firebase.storage.StorageTask;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.teamsar.eventure.R;
 import com.theartofdev.edmodo.cropper.CropImage;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;

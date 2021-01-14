@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    tools:context=".activity_home.fragments_bnb.TimelineFragment">
+    tools:context=".activities.activity_home.fragments_bnb.TimelineFragment">
 
     <TextView
         android:id="@+id/textView"
