@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventure">
-        <activity android:name=".activities.activity_addnewevent.AddNewEvent"></activity>
-        // activity for CropperImage
+        <activity android:name=".activities.activity_search.SearchActivity"></activity>
+        <activity android:name=".activities.activity_addnewevent.AddNewEvent" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
         <activity
             android:name=".activities.activity_home.HomeActivity"
@@ -35,7 +36,7 @@
         </activity>
         <activity
             android:name=".activities.activity_login.LoginActivity"
-            android:theme="@style/Theme.Eventure.NoActionBar"></activity>
+            android:theme="@style/Theme.Eventure.NoActionBar" />
     </application>
 
 </manifest>

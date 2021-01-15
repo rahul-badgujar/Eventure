@@ -86,6 +86,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.signout_menu_item: // if logout button is pressed
                 signOut();  // sign out
+
+            case R.id.search_button: // if search button is pressed
+                //Start new Activity
+
             default: return super.onOptionsItemSelected(item);
         }
     }
