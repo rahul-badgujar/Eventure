@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".activities.activity_search.SearchActivity">
 
+    <ImageView
+        android:id="@+id/search_imageView"
+        android:layout_width="40dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_search_24" />
+
+    <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
+        android:id="@+id/search_bar"
+        android:layout_width="333dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/search_imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_user"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_hashtags"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_user" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SearchEvent;
 import android.widget.Toast;
 
 import com.teamsar.eventure.R;
@@ -24,6 +25,7 @@ import com.teamsar.eventure.activities.activity_home.fragments_bnb.NotificationF
 import com.teamsar.eventure.activities.activity_home.fragments_bnb.ProfileFragment;
 import com.teamsar.eventure.activities.activity_home.fragments_bnb.TimelineFragment;
 import com.teamsar.eventure.activities.activity_login.LoginActivity;
+import com.teamsar.eventure.activities.activity_search.SearchActivity;
 import com.teamsar.eventure.services.AuthenticationClient;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -89,6 +91,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.search_button: // if search button is pressed
                 //Start new Activity
+                startActivity(new Intent(HomeActivity.this, SearchActivity.class));
 
             default: return super.onOptionsItemSelected(item);
         }
