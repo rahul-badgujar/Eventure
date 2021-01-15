@@ -8,6 +8,9 @@ import com.teamsar.eventure.R;
 
 public class SearchActivity extends AppCompatActivity {
 
+    //Tag for testing purpose
+    private static final String LOG_TAG = "activity-search-context";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

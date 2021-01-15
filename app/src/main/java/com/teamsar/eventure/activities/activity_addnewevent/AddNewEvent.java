@@ -33,7 +33,7 @@ import java.util.Objects;
 public class AddNewEvent extends AppCompatActivity {
 
     //Tag for testing purpose
-    private static final String LOG_TAG = "ACTIVITY_ADD'NEW'EVENT_CONTEXT";
+    private static final String LOG_TAG = "activity-add'new'event-context";
 
     //global URI variable for image;
     private Uri imageURI;

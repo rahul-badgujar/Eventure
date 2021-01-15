@@ -27,4 +27,5 @@
     <string name="event_poster_to_upload">event poster to upload</string>
     <string name="post">POST</string>
     <string name="cancel_button_textview">cancel button textview</string>
+    <string name="search">Search</string>
 </resources>
