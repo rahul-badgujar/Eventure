@@ -27,7 +27,7 @@
         android:layout_height="150dp"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/profile_image_here"
-        android:src="@drawable/ic_baseline_account_circle_24"
+        app:srcCompat="@drawable/ic_baseline_account_circle_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +54,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/displayname_tv" />
+
+    <TextView
+        android:id="@+id/edit_profile_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:linksClickable="false"
+        android:text="@string/edit_profile"
+        android:textColor="?android:attr/textColorLink"
+        android:textColorLink="?android:attr/textColorLink"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_tv" />
 
     <Button
         android:id="@+id/signout_btn"

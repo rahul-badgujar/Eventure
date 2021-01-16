@@ -1,5 +1,6 @@
 package com.teamsar.eventure.activities.activity_home.fragments_bnb;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.teamsar.eventure.R;
+import com.teamsar.eventure.activities.activity_editprofile.EditProfileActivity;
 import com.teamsar.eventure.activities.activity_home.HomeActivity;
 
 
@@ -26,6 +29,7 @@ public class ProfileFragment extends Fragment {
     private TextView displayNameTv;
     private TextView emailTv;
     private Button signOutBtn;
+    private TextView editProfileTv;
 
     // Firebase Auth
     private FirebaseAuth mAuth;
@@ -54,6 +58,16 @@ public class ProfileFragment extends Fragment {
                 HomeActivity homeActivity=(HomeActivity)getActivity();
                 // sign out now
                 homeActivity.signOut();
+            }
+        });
+        // configure edit profile textview
+        editProfileTv=v.findViewById(R.id.edit_profile_tv);
+        // giving on click listener
+        editProfileTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // Toast.makeText(getContext(), "Edit Profile coming...", Toast.LENGTH_SHORT).show();
+                launchEditProfileActivity();
             }
         });
 
@@ -85,6 +99,11 @@ public class ProfileFragment extends Fragment {
         }
 
         return v;
+    }
+
+    private void launchEditProfileActivity() {
+        Intent intentToEditProfile = new Intent(getContext(), EditProfileActivity.class);
+        startActivity(intentToEditProfile);
     }
 
     private String googlePhotoUrlOfPixelSize(String photoUrl, int pxWidth) {
