@@ -165,10 +165,9 @@ public class AddNewEvent extends AppCompatActivity {
                     ring.start();
 
                     // task is successful
-                    progressDialog.setMessage("Uploaded");
                     progressDialog.dismiss();  //Dismissing the progress dialogue
                     // go back to home activity
-                    finish(); // delaying the task for 2 seconds
+                    finish();
                 }
 
                 /*

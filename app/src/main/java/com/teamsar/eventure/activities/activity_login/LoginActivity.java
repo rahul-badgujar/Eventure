@@ -3,6 +3,8 @@ package com.teamsar.eventure.activities.activity_login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -95,7 +97,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void requestSignIn(Intent data) {
         try {
-
             // if currentGoogleAccount is null, it means their is no used logged in currently
             GoogleSignInAccount currentGoogleAccount = authClient.getSignedInGoogleAccountFromIntent(data);
             if (currentGoogleAccount != null) {
