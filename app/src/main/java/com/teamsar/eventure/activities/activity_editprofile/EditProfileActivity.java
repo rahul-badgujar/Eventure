@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -24,6 +28,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView emailTv;
     private EditText bioEt;
     private ShapeableImageView profileImgIv;
+    private ExtendedFloatingActionButton saveDetailsFab;
 
     // Authentication Client
     private AuthenticationClient authClient;
@@ -47,6 +52,14 @@ public class EditProfileActivity extends AppCompatActivity {
         bioEt=findViewById(R.id.bio_et);
         // config profile image image view
         profileImgIv=findViewById(R.id.editprofile_profileimg_iv);
+        // config save details floating action button
+        saveDetailsFab=findViewById(R.id.save_details_fab);
+        saveDetailsFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Details will be saved soon...", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // fill the fields with users details
         if(authClient.isUserSignedIn()) {

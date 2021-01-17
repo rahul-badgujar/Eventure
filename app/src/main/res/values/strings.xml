@@ -35,4 +35,5 @@
     <string name="no_email_available">No email available</string>
     <string name="bio">Bio</string>
     <string name="tell_us_something_about_you">Tell us something about you...</string>
+    <string name="save_details">Save details</string>
 </resources>

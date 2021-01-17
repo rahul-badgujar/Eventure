@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".activities.activity_editprofile.EditProfileActivity">
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/save_details_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/save_details"
+        android:src="@android:drawable/stat_sys_upload"
+        android:text="@string/save_details"
+        app:icon="@android:drawable/stat_sys_upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"

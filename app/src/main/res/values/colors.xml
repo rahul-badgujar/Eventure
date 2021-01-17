@@ -4,6 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#d12ca0</color>
     <color name="primaryVariant">#d12ca0</color>
-    <color name="secondary">#3678fa</color>
-    <color name="secondaryVariant">#3678fa</color>
+    <color name="secondary">#d12ca0</color>
+    <color name="secondaryVariant">#d12ca0</color>
 </resources>
