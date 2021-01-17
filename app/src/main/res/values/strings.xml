@@ -29,4 +29,10 @@
     <string name="cancel_button_textview">cancel button textview</string>
     <string name="search">Search</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="name_of_user">Name of user</string>
+    <string name="name">Name</string>
+    <string name="email_address_of_user">Email address of user</string>
+    <string name="no_email_available">No email available</string>
+    <string name="bio">Bio</string>
+    <string name="tell_us_something_about_you">Tell us something about you...</string>
 </resources>

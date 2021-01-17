@@ -106,7 +106,7 @@ public class ProfileFragment extends Fragment {
         startActivity(intentToEditProfile);
     }
 
-    private String googlePhotoUrlOfPixelSize(String photoUrl, int pxWidth) {
+    public static String googlePhotoUrlOfPixelSize(String photoUrl, int pxWidth) {
         // Variable holding the original String portion of the url that will be replaced
         String originalPieceOfUrl = "s96-c";
 

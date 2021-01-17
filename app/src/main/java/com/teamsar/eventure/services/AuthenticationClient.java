@@ -131,4 +131,6 @@ public class AuthenticationClient {
             return firebaseAuth.signInWithCredential(credential);
         }
     }
+
+
 }
