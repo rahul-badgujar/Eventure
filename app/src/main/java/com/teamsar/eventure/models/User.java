@@ -8,7 +8,7 @@ public class User {
     public final static String ID_KEY = "id";
     public final static String NAME_KEY = "name";
     public final static String EMAIL_KEY = "email";
-    public final static String IMAGE_URI_KEY = "image_uri";
+    public final static String IMAGE_URI_KEY = "imageUri";
     public final static String BIO_KEY = "bio";
 
 
@@ -18,12 +18,8 @@ public class User {
     private String imageUri;
     private String bio;
 
+
     public User() {
-        this.id = null;
-        this.name = null;
-        this.email = null;
-        this.imageUri = null;
-        this.bio = null;
     }
 
     public User(String id, String name, String email, String imageUri, String bio) {
@@ -35,7 +31,6 @@ public class User {
     }
 
     public User(Map<String, Object> m) {
-        this(); // allots all the field null value
         if (m.get(ID_KEY) != null)
             this.id = m.get(ID_KEY).toString();
         if (m.get(NAME_KEY) != null)

@@ -19,8 +19,13 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.teamsar.eventure.R;
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthException;
+import com.teamsar.eventure.models.User;
 import com.teamsar.eventure.services.AuthenticationClient;
 
 public class LoginActivity extends AppCompatActivity {
@@ -126,8 +131,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.i(LOG_TAG, "Firebase sign in successful: " + authClient.getCurrentUser().getEmail());
                     Toast.makeText(getApplicationContext(), authClient.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-                    // sign in successful, finish the activity
-                    finish();
+                    // sign in successful, validate the user details instance in database
+                    validateUserDetailsInstance();
                 } else {
                     Log.i(LOG_TAG, "Firebase sign in failed ");
                     Toast.makeText(getApplicationContext(), "Sign in failed, retry", Toast.LENGTH_SHORT).show();
@@ -135,6 +140,53 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    // checks if user details instance is present in database or not
+    private void validateUserDetailsInstance() {
+        authClient.getUserDataInstanceRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FirebaseUser user=authClient.getCurrentUser();
+                // deserialize User data into User object
+                User userData = snapshot.getValue(User.class);
+                // if data is not present already
+                if (userData == null) {
+                    // create the instance in database
+                    createUserDetailsInstance(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "Something went wrong while creating user data instance", Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    private void createUserDetailsInstance(FirebaseUser user) {
+        // create a initial details user data object
+        User initUserData = new User(
+                user.getUid(),
+                user.getDisplayName(),
+                user.getEmail(),
+                user.getPhotoUrl().toString(),
+                null
+        );
+        // save the data on firebase
+        authClient.getUserDataInstanceRef().setValue(initUserData).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "User data instance created", Toast.LENGTH_LONG).show();
+                    // all tasks done, now return to the home activity
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Something went wrong while creating user data instance", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 

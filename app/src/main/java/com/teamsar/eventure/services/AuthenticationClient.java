@@ -4,18 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthException;
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionInternalError;
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionInvalidAccount;
@@ -25,10 +33,12 @@ import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionSignInCancel
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionSignInCurrentlyInProgress;
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionSignInFailed;
 import com.teamsar.eventure.exceptions.auth_exceptions.AuthExceptionSignInRequired;
+import com.teamsar.eventure.models.User;
 
 public class AuthenticationClient {
 
     static final String oAuthToken = "887686437041-4f75fcpn11d200i05dlsqo3ri3hif51j.apps.googleusercontent.com";
+    static final String USERS_DB_NAME = "users";
 
     public AuthenticationClient(Context context) {
         this.context = context;
@@ -49,6 +59,47 @@ public class AuthenticationClient {
     // getter for current user
     public FirebaseUser getCurrentUser() {
         return this.firebaseAuth.getCurrentUser();
+    }
+
+    // get reference to user details database instance
+    public DatabaseReference getUserDataInstanceRef() {
+        String userUid = getCurrentUser().getUid();
+        // get ref to the users database instance
+        return FirebaseDatabase.getInstance().getReference().child(USERS_DB_NAME).child(userUid);
+        /*usersDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // deserialize User data into User object
+                User user = snapshot.getValue(User.class);
+                // if data is not present already
+                if (user == null) {
+                    // create a initial details user data object
+                    User initUserData = new User(
+                            userUid,
+                            getCurrentUser().getDisplayName(),
+                            getCurrentUser().getEmail(),
+                            getCurrentUser().getPhotoUrl().toString(),
+                            null
+                    );
+                    // save the data on firebase
+                    usersDbRef.child(userUid).setValue(initUserData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                Toast.makeText(context, "User data instance created", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(context, "Something went wrong while creating user data instance", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Something went wrong while creating user data instance", Toast.LENGTH_LONG).show();
+            }
+        });*/
     }
 
     // method to check if user is signed in
