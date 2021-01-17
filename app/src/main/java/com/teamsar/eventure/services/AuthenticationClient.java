@@ -66,40 +66,11 @@ public class AuthenticationClient {
         String userUid = getCurrentUser().getUid();
         // get ref to the users database instance
         return FirebaseDatabase.getInstance().getReference().child(USERS_DB_NAME).child(userUid);
-        /*usersDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // deserialize User data into User object
-                User user = snapshot.getValue(User.class);
-                // if data is not present already
-                if (user == null) {
-                    // create a initial details user data object
-                    User initUserData = new User(
-                            userUid,
-                            getCurrentUser().getDisplayName(),
-                            getCurrentUser().getEmail(),
-                            getCurrentUser().getPhotoUrl().toString(),
-                            null
-                    );
-                    // save the data on firebase
-                    usersDbRef.child(userUid).setValue(initUserData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                Toast.makeText(context, "User data instance created", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(context, "Something went wrong while creating user data instance", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                }
-            }
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Something went wrong while creating user data instance", Toast.LENGTH_LONG).show();
-            }
-        });*/
+    // update users bio
+    public Task<Void> updateBio(String bio) {
+        return getUserDataInstanceRef().child(User.BIO_KEY).setValue(bio);
     }
 
     // method to check if user is signed in

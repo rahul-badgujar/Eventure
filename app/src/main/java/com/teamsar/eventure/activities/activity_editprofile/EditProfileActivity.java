@@ -1,5 +1,6 @@
 package com.teamsar.eventure.activities.activity_editprofile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
@@ -9,12 +10,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.teamsar.eventure.R;
+import com.teamsar.eventure.models.User;
 import com.teamsar.eventure.services.AuthenticationClient;
 
 import java.util.Objects;
@@ -57,7 +64,7 @@ public class EditProfileActivity extends AppCompatActivity {
         saveDetailsFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Details will be saved soon...", Toast.LENGTH_SHORT).show();
+                saveDetails();
             }
         });
 
@@ -82,8 +89,43 @@ public class EditProfileActivity extends AppCompatActivity {
                         .error(R.drawable.ic_baseline_account_circle_24)    // if placeholder for error
                         .into(profileImgIv);
             }
+
+            // fill in the bio if present
+            authClient.getUserDataInstanceRef().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // deserialize the data into instance of User
+                    User userData=snapshot.getValue(User.class);
+                    // if user data is present
+                    if(userData!=null) {
+                        bioEt.setText(userData.getBio());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "User details instance not found in database", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong while reading users data", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 
+    }
+
+    private void saveDetails() {
+        // update bio
+        String bio=bioEt.getText().toString();
+        authClient.updateBio(bio).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Profile updated", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
